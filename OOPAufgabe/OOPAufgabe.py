@@ -76,11 +76,13 @@ def clear():
 
 def what_do_you_want():
     clear()
-    choice = input("What do you want to do? \nRegister \nSearch\n> ")
+    choice = input("What do you want to do? \nRegister \nSearch\nChange\n> ")
     if choice == "register" or choice == "Register":
         registry()
     elif choice == "search" or choice == "Search":
         search()
+    elif choice == "change" or choice == "Change":
+        change()
     else:
         input("Didn't understand that.. Press Enter to continue")
 
@@ -184,65 +186,19 @@ def search():
     clear()
     user_search = input("Type in the username you are looking for, or type 'exit' to go back to menu\n> ")
     for x in devices:
+
         if user_search == x.user:
             clear()
             print(x.pc_name, ",", x.system, ",", x.user)
 
-            sec_choice = input("Do you want to make changes to this profile? Or do you want to\n"
-                               "search for more devices with the same username? Type 'yes' for change,\n"
-                               "'no' to change nothing and get back, or 'search' for searching for another devices with the same user\n>")
+            sec_choice = input("Do you want to search for more devices with the same username? Type 'yes' for search,\n"
+                               "or 'no' to get back to the search function\n>")
 
-            if sec_choice == "yes" or sec_choice == "Yes":
-                if user_search == x.user:
-                    clear()
-                    print(x.pc_name, ",", x.system, ",", x.user)
-                    change_func = 0
-                    while change_func == 0:
-                        clear()
-                        next_choice = input(
-                            f"Profile: {x}\nWhat do you want to change?\nPC-Name[Type 'Name']\nUsername[User]"
-                            " \nOS[OS]\nOr do you want to quit[Quit] the change function?\n> ")
-
-                        if next_choice == "name" or next_choice == "Name":
-                            clear()
-                            print("Current PC-Name:", x.pc_name)
-                            new_pc_name = input(f"\nChange the PC Name:\n> ")
-                            name_check(new_pc_name, "change")
-                            x.pc_name = new_pc_name
-                            clear()
-                            print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
-
-                        elif next_choice == "User" or next_choice == "user":
-                            clear()
-                            new_user = input(f"Change the PC User:\n> ")
-                            user_check(new_user, "change")
-                            x.user = new_user
-                            clear()
-                            print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
-
-                        elif next_choice == "OS" or next_choice == "os":
-                            clear()
-                            print(operation_systems)
-                            new_os = input(f"Current OS: {x.system}\nChange the PC OS:\n> ")
-                            os_check(new_os, "change")
-                            x.system = new_os
-                            clear()
-                            print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
-
-                        elif next_choice == "quit" or next_choice == "Quit":
-                            change_func += 1
-                            clear()
-                            search()
-                        else:
-                            clear()
-                            input("Didn't understand that.. Press Enter and try again")
-                            search()
-
-            elif sec_choice == "no" or sec_choice == "No":
+            if sec_choice == "no" or sec_choice == "No":
                 clear()
                 input("Going back to search. Press Enter..")
                 search()
-            elif sec_choice == "search" or sec_choice == "Search":
+            elif sec_choice == "yes" or sec_choice == "Yes":
                 clear()
                 if user_search != x.user:
                     input("User hasn't been found.. Press Enter to continue")
@@ -255,6 +211,61 @@ def search():
         clear()
         input("Nothing found.. Press Enter to get back to search function")
         search()
+
+
+def change():
+    clear()
+    user_search = input("Type in the username you are looking for, or type 'exit' to go back to menu \n>")
+    if user_search == "exit" or user_search == "Exit":
+        what_do_you_want()
+    for x in devices:
+        if user_search == x.user:
+            clear()
+            print(x.pc_name, ",", x.system, ",", x.user)
+
+            while True:
+                clear()
+                next_choice = input(
+                    f"Profile: {x}\nWhat do you want to change?\n-----------\nPC-Name[Type 'Name']\nUsername[User]"
+                    " \nOS[OS]\nOr do you want to quit[Quit] the change function?\n> ")
+
+                if next_choice == "name" or next_choice == "Name":
+                    clear()
+                    print("Current PC-Name:", x.pc_name)
+                    new_pc_name = input(f"\nChange the PC Name:\n> ")
+                    if x.pc_name == new_pc_name:
+                        input("Name already taken, press enter to try another one")
+                    name_check(new_pc_name, "change")
+                    x.pc_name = new_pc_name
+                    clear()
+                    print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
+
+                elif next_choice == "User" or next_choice == "user":
+                    clear()
+                    new_user = input(f"Change the PC User:\n> ")
+                    user_check(new_user, "change")
+                    x.user = new_user
+                    clear()
+                    print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
+
+                elif next_choice == "OS" or next_choice == "os":
+                    clear()
+                    print(operation_systems)
+                    new_os = input(f"Current OS: {x.system}\nChange the PC OS:\n> ")
+                    os_check(new_os, "change")
+                    x.system = new_os
+                    clear()
+                    print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
+
+                elif next_choice == "quit" or next_choice == "Quit":
+
+                    clear()
+                    change()
+                    break
+                else:
+                    clear()
+                    input("Didn't understand that.. Press Enter and try again")
+                    search()
 
 
 what_do_you_want()
