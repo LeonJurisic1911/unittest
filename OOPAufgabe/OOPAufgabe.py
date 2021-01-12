@@ -32,7 +32,7 @@ def name_check(eingabe, registry_or_change):
             if registry_or_change == "registry":
                 registry()
             elif registry_or_change == "change":
-                search()
+                change()
         else:
             pass
     if eingabe == "" or eingabe == " ":
@@ -92,9 +92,8 @@ def what_do_you_want():
 def registry():
     clear()
     device_choice = input("Register Device (Type exit to go back to menu)\n ---------------- \n"
-                          "What kind of computer do you have? \n"
-                          "| ws | laptop | mac |\n> ")
-    if device_choice == "ws" or device_choice == "workstation":
+                          "What kind of computer do you have? \n| ws | laptop | mac |\n> ")
+    if device_choice == "ws" or device_choice == "workstation" or device_choice == "WS":
         clear()
         ws_name = input("Workstation Name \n> ")
         name_check(ws_name, "registry")
@@ -104,11 +103,9 @@ def registry():
             print(x)
         ws_os = input("Workstation OS [First letter is always Capital] \n> ")
         os_check(ws_os, "registry")
-
         clear()
         ws_user = input("Workstation User \n> ")
         user_check(ws_user, "registry")
-
         ws = Workstation(ws_name, ws_os, ws_user)
         devices.append(ws)
         print(devices[-1])
@@ -124,20 +121,16 @@ def registry():
     # laptop registry
     elif device_choice == "laptop":
         clear()
-
         lap_name = input("Laptop Name\n> ")
         name_check(lap_name, "registry")
-
         clear()
         for x in operation_systems:
             print(x)
         lap_os = input("Laptop OS [First letter is always Capital]\n> ")
         os_check(lap_os, "registry")
-
         clear()
         lap_user = input("Laptop user\n> ")
         user_check(lap_user, "registry")
-
         clear()
         laptop = Laptop(lap_name, lap_os, lap_user)
         devices.append(laptop)
@@ -153,18 +146,14 @@ def registry():
     # mac registry
     elif device_choice == "mac":
         clear()
-
         mac_name = input("Mac Name\n> ")
         name_check(mac_name, "registry")
-
         clear()
         input("Operation System: Mac-OS\n Press Enter to continue")
         mac_os = "Mac-OS"
-
         clear()
         mac_user = input("Mac user\n> ")
         user_check(mac_user, "registry")
-
         mac = Workstation(mac_name, mac_os, mac_user)
         devices.append(mac)
         print(devices[-1])
@@ -190,10 +179,8 @@ def search():
         if user_search == x.user:
             clear()
             print(x.pc_name, ",", x.system, ",", x.user)
-
             sec_choice = input("Do you want to search for more devices with the same username? Type 'yes' for search,\n"
                                "or 'no' to get back to the search function\n>")
-
             if sec_choice == "no" or sec_choice == "No":
                 clear()
                 input("Going back to search. Press Enter..")
@@ -232,9 +219,7 @@ def change():
                 if next_choice == "name" or next_choice == "Name":
                     clear()
                     print("Current PC-Name:", x.pc_name)
-                    new_pc_name = input(f"\nChange the PC Name:\n> ")
-                    if x.pc_name == new_pc_name:
-                        input("Name already taken, press enter to try another one")
+                    new_pc_name = input(f"\n--------\nChange the PC Name:\n> ")
                     name_check(new_pc_name, "change")
                     x.pc_name = new_pc_name
                     clear()
@@ -252,13 +237,14 @@ def change():
                     clear()
                     print(operation_systems)
                     new_os = input(f"Current OS: {x.system}\nChange the PC OS:\n> ")
+                    if x.system == "Mac-OS":
+                        input("You can't change a Macbook's operation system. Press Enter")
                     os_check(new_os, "change")
                     x.system = new_os
                     clear()
                     print(f"Profile has been changed: {x.pc_name, x.system, x.user}\nPress Enter to continue")
 
                 elif next_choice == "quit" or next_choice == "Quit":
-
                     clear()
                     change()
                     break
