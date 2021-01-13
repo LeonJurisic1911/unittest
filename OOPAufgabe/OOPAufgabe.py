@@ -25,22 +25,32 @@ operation_systems = ["Windows 10", "Windows 7", "Linux"]
 devices = []
 
 
+def reg_or_change(param):
+    if param == "registry":
+        registry()
+    elif param == "change":
+        change()
+
+
+def reg_choice(choice):
+    if choice == "yes":
+        registry()
+    elif choice == "no":
+        what_do_you_want()
+    else:
+        input("Didnt understand that.. Sending you back to menu, press Enter")
+
+
 def name_check(eingabe, registry_or_change):
     for x in devices:
         if x.pc_name in eingabe:
             input("This name is already taken or not valid. Press Enter to try another one.")
-            if registry_or_change == "registry":
-                registry()
-            elif registry_or_change == "change":
-                change()
+            registry_or_change(registry_or_change)
         else:
             pass
     if eingabe == "" or eingabe == " ":
         input("You need to write something!\nPress Enter to Continue")
-        if registry_or_change == "registry":
-            registry()
-        elif registry_or_change == "change":
-            search()
+        registry_or_change(registry_or_change)
     else:
         pass
 
@@ -54,19 +64,13 @@ def os_check(eingabe, registry_or_change):
                 input("Press Enter to continue")
     else:
         input("OS hasn't been found.. Press Enter")
-        if registry_or_change == "registry":
-            registry()
-        elif registry_or_change == "change":
-            search()
+        registry_or_change(registry_or_change)
 
 
 def user_check(eingabe, registry_or_change):
     if eingabe == "" or eingabe == " ":
         input("You need to write something! Press Enter")
-        if registry_or_change == "registry":
-            registry()
-        elif registry_or_change == "change":
-            search()
+        registry_or_change(registry_or_change)
 
 
 def clear():
@@ -110,13 +114,7 @@ def registry():
         devices.append(ws)
         print(devices[-1])
         choice = input("Do you want to register another device? Type yes or no\n> ")
-        if choice == "yes":
-            registry()
-        elif choice == "no":
-            what_do_you_want()
-        else:
-            input("Didn't understand that.. Sending you back to menu, press Enter")
-            what_do_you_want()
+        reg_choice(choice)
 
     # laptop registry
     elif device_choice == "laptop":
@@ -136,12 +134,7 @@ def registry():
         devices.append(laptop)
         print(devices[-1])
         choice = input("Do you want to register another device? Type yes or no\n> ")
-        if choice == "yes":
-            registry()
-        elif choice == "no":
-            what_do_you_want()
-        else:
-            input("Didnt understand that.. Sending you back to menu, press Enter")
+        reg_choice(choice)
 
     # mac registry
     elif device_choice == "mac":
@@ -158,12 +151,7 @@ def registry():
         devices.append(mac)
         print(devices[-1])
         choice = input("Do you want to register another device? Type yes or no\n> ")
-        if choice == "yes":
-            registry()
-        elif choice == "no":
-            what_do_you_want()
-        else:
-            input("Didn't understand that.. Sending you back to menu, press Enter")
+        reg_choice(choice)
     elif device_choice == "exit" or device_choice == "Exit":
         what_do_you_want()
     else:
@@ -175,7 +163,6 @@ def search():
     clear()
     user_search = input("Type in the username you are looking for, or type 'exit' to go back to menu\n> ")
     for x in devices:
-
         if user_search == x.user:
             clear()
             print(x.pc_name, ",", x.system, ",", x.user)
